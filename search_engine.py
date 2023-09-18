@@ -64,22 +64,44 @@ for line in tokens:
 docMatrix = []
 frequency = {}
 idf = {}
+tf = {}
 
 for word in terms:
   frequency.update({word : 0})
   idf.update({word : 0})
+
 for word in terms:
     for line in tokens:
         if word in line:
             frequency.update({word : frequency.get(word)+1})
 
 for word in idf:
-    print(frequency.get(word))
     div = len(documents) / frequency.get(word)
-    print(div)
     value = math.log(div, 10)
     idf.update({word : value})
-print(idf)
+
+for i in range(len(documents)):
+    tf.update({i : {}})
+
+#print(tokens)
+for index, line in enumerate(tokens):
+    for word in terms:
+        count = line.count(word)
+        total = len(line)
+        result = count/total
+        tf.get(index).update({word : result})
+#print(tf)
+
+for doc in tf.values():
+    for word in terms:
+        result = doc.get(word) * idf.get(word)
+        docMatrix.append(result)
+print(docMatrix)
+        
+
+
+
+#print(idf)
 
 #Calculate the document scores (ranking) using document weigths (tf-idf) calculated before and query weights (binary - have or not the term).
 #--> add your Python code here
