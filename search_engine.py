@@ -1,7 +1,7 @@
 #-------------------------------------------------------------------------
-# AUTHOR: your name
-# FILENAME: title of the source file
-# SPECIFICATION: description of the program
+# AUTHOR: Janista Gitbumrungsin
+# FILENAME: search_engine
+# SPECIFICATION: Mimic the process of finding index terms and calculating the document scores based on a query
 # FOR: CS 4250- Assignment #1
 # TIME SPENT: how long it took you to complete the assignment
 #-----------------------------------------------------------*/
@@ -25,10 +25,21 @@ with open('collection.csv', 'r') as csvfile:
 #Conduct stopword removal.
 #--> add your Python code here
 stopWords = {'I', 'and', 'She', 'They', 'her', 'their'}
+tokens = []
+for i in range(len(documents)):
+    tokens.append(documents[i].split())
+
+print(tokens)
+for line in tokens:
+    for word in line:
+        if word in stopWords:
+            line.remove(word)
+print(tokens)
+        
 
 #Conduct stemming.
 #--> add your Python code here
-steeming = {
+stemming = {
   "cats": "cat",
   "dogs": "dog",
   "loves": "love",
