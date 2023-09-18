@@ -26,15 +26,14 @@ with open('collection.csv', 'r') as csvfile:
 #--> add your Python code here
 stopWords = {'I', 'and', 'She', 'They', 'her', 'their'}
 tokens = []
+
 for i in range(len(documents)):
     tokens.append(documents[i].split())
 
-print(tokens)
 for line in tokens:
     for word in line:
         if word in stopWords:
             line.remove(word)
-print(tokens)
         
 
 #Conduct stemming.
@@ -44,6 +43,11 @@ stemming = {
   "dogs": "dog",
   "loves": "love",
 }
+
+for index, line in enumerate(tokens):
+    for i, word in enumerate(line):
+        if word in stemming.keys():
+            line[i] = stemming.get(word)
 
 #Identify the index terms.
 #--> add your Python code here
