@@ -83,29 +83,40 @@ for word in idf:
 for i in range(len(documents)):
     tf.update({i : {}})
 
-#print(tokens)
 for index, line in enumerate(tokens):
     for word in terms:
         count = line.count(word)
         total = len(line)
         result = count/total
         tf.get(index).update({word : result})
-#print(tf)
 
-for doc in tf.values():
+for entry in tf.values():
     for word in terms:
-        result = doc.get(word) * idf.get(word)
+        result = entry.get(word) * idf.get(word)
         docMatrix.append(result)
-print(docMatrix)
-        
-
-
-
-#print(idf)
+print(docMatrix)     
 
 #Calculate the document scores (ranking) using document weigths (tf-idf) calculated before and query weights (binary - have or not the term).
 #--> add your Python code here
 docScores = []
+queryWeights = []
+query = "cats and dogs"
+
+queryTokens = query.split()
+for i, word in enumerate(queryTokens):
+        if word in stopWords:
+            queryTokens.remove(word)
+for i, word in enumerate(queryTokens):
+        if word in stemming.keys():
+            queryTokens[i] = stemming.get(word)
+
+print(queryTokens)
+for word in terms:
+    if word in queryTokens:
+        queryWeights.append(1)
+    else:
+        queryWeights.append(0)
+print(queryWeights)
 
 #Calculate and print the precision and recall of the model by considering that the search engine will return all documents with scores >= 0.1.
 #--> add your Python code here
