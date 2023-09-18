@@ -1,9 +1,9 @@
 #-------------------------------------------------------------------------
 # AUTHOR: Janista Gitbumrungsin
 # FILENAME: search_engine
-# SPECIFICATION: Mimic the process of a search engine finding index terms and calculating the document scores based on a query
+# SPECIFICATION: Mimic the process of a search engine finding index terms and calculating the document scores to rank based on a query
 # FOR: CS 4250- Assignment #1
-# TIME SPENT: how long it took you to complete the assignment
+# TIME SPENT: 4 hours
 #-----------------------------------------------------------*/
 
 #IMPORTANT NOTE: DO NOT USE ANY ADVANCED PYTHON LIBRARY TO COMPLETE THIS CODE SUCH AS numpy OR pandas. You have to work here only with standard arrays
@@ -49,6 +49,11 @@ for index, line in enumerate(tokens):
     for i, word in enumerate(line):
         if word in stemming.keys():
             line[i] = stemming.get(word)
+print("\n-----SEARCH ENGINE-----\n")
+print("Document Tokens:")
+for line in tokens:
+    print(line)
+print()
 
 #Identify the index terms.
 #--> add your Python code here
@@ -93,8 +98,24 @@ for index, line in enumerate(tokens):
 for entry in tf.values():
     for word in terms:
         result = entry.get(word) * idf.get(word)
-        docMatrix.append(result)
-print(docMatrix)     
+        docMatrix.append(result)  
+
+count = 1
+print("-----tf-idf Matrix-----")
+print("\t", end = "")
+for word in terms:
+    print(word, end = "   ")
+print()
+
+for i in range(len(docMatrix)):
+    if i != 0 and i%len(terms) == 0:
+        print("\n")  
+    if i%len(terms) == 0:
+        print("Doc " + str(count) + ":", end = " ")
+        count = count + 1
+    print("%.3f" % (docMatrix[i]), end = " ")
+print("\n")
+    
 
 #Calculate the document scores (ranking) using document weigths (tf-idf) calculated before and query weights (binary - have or not the term).
 #--> add your Python code here
@@ -110,13 +131,18 @@ for i, word in enumerate(queryTokens):
         if word in stemming.keys():
             queryTokens[i] = stemming.get(word)
 
+print("Query Tokens:", end = " ")
 print(queryTokens)
+
 for word in terms:
     if word in queryTokens:
         queryWeights.append(1)
     else:
         queryWeights.append(0)
+
+print("Query Weights:", end = " ")
 print(queryWeights)
+print()
 
 sum = 0
 for i in range(len(docMatrix)):
@@ -127,7 +153,10 @@ for i in range(len(docMatrix)):
     sum = sum + value
 docScores.append(sum)
 docScores.pop(0)
+
+print("Document Scores:")
 print(docScores)
+print()
 
 #Calculate and print the precision and recall of the model by considering that the search engine will return all documents with scores >= 0.1.
 #--> add your Python code here
@@ -137,6 +166,12 @@ for i in range(len(labels)):
 hits = 0
 misses = 0
 noise = 0
+
+print("Retrieved Documents:")
+for i in range(len(docScores)):
+    if docScores[i] >= 0.1:
+        print("Document " + str(i + 1))
+print()
 
 for i in range(len(labels)):
     if docScores[i] >= 0.1 and labels[i] == "R":
@@ -150,3 +185,4 @@ recall = (hits /(hits + misses)) * 100
 precision = (hits / (hits + noise)) * 100
 print("Precision: " + str(precision) + " %")
 print("Recall: " + str(recall) + " %")
+print("---------------")
