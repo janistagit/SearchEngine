@@ -131,3 +131,22 @@ print(docScores)
 
 #Calculate and print the precision and recall of the model by considering that the search engine will return all documents with scores >= 0.1.
 #--> add your Python code here
+for i in range(len(labels)):
+    labels[i] = labels[i].strip()
+
+hits = 0
+misses = 0
+noise = 0
+
+for i in range(len(labels)):
+    if docScores[i] >= 0.1 and labels[i] == "R":
+        hits = hits + 1
+    elif docScores[i] >= 0.1 and labels[i] == "I":
+        noise = noise + 1
+    elif docScores[i] < 0.1 and labels[i] == "R":
+        misses = misses + 1
+
+recall = (hits /(hits + misses)) * 100
+precision = (hits / (hits + noise)) * 100
+print("Precision: " + str(precision) + " %")
+print("Recall: " + str(recall) + " %")
