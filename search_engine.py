@@ -1,7 +1,7 @@
 #-------------------------------------------------------------------------
 # AUTHOR: Janista Gitbumrungsin
 # FILENAME: search_engine
-# SPECIFICATION: Mimic the process of finding index terms and calculating the document scores based on a query
+# SPECIFICATION: Mimic the process of a search engine finding index terms and calculating the document scores based on a query
 # FOR: CS 4250- Assignment #1
 # TIME SPENT: how long it took you to complete the assignment
 #-----------------------------------------------------------*/
@@ -10,6 +10,7 @@
 
 #importing some Python libraries
 import csv
+import math
 
 documents = []
 labels = []
@@ -61,6 +62,24 @@ for line in tokens:
 #Build the tf-idf term weights matrix.
 #--> add your Python code here
 docMatrix = []
+frequency = {}
+idf = {}
+
+for word in terms:
+  frequency.update({word : 0})
+  idf.update({word : 0})
+for word in terms:
+    for line in tokens:
+        if word in line:
+            frequency.update({word : frequency.get(word)+1})
+
+for word in idf:
+    print(frequency.get(word))
+    div = len(documents) / frequency.get(word)
+    print(div)
+    value = math.log(div, 10)
+    idf.update({word : value})
+print(idf)
 
 #Calculate the document scores (ranking) using document weigths (tf-idf) calculated before and query weights (binary - have or not the term).
 #--> add your Python code here
