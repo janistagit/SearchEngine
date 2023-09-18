@@ -118,5 +118,16 @@ for word in terms:
         queryWeights.append(0)
 print(queryWeights)
 
+sum = 0
+for i in range(len(docMatrix)):
+    if (i%len(terms) == 0):
+        docScores.append(sum)
+        sum = 0
+    value = docMatrix[i] * queryWeights[i%len(terms)]
+    sum = sum + value
+docScores.append(sum)
+docScores.pop(0)
+print(docScores)
+
 #Calculate and print the precision and recall of the model by considering that the search engine will return all documents with scores >= 0.1.
 #--> add your Python code here
