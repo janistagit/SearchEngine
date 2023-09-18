@@ -53,6 +53,11 @@ for index, line in enumerate(tokens):
 #--> add your Python code here
 terms = []
 
+for line in tokens:
+    for word in line:
+        if word not in terms:
+            terms.append(word)
+
 #Build the tf-idf term weights matrix.
 #--> add your Python code here
 docMatrix = []
